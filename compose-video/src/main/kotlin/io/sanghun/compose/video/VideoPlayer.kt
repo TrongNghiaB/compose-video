@@ -106,6 +106,7 @@ import kotlinx.coroutines.delay
 fun VideoPlayer(
     modifier: Modifier = Modifier,
     mediaItems: List<VideoPlayerMediaItem>,
+    customPlayer: ExoPlayer? = null,
     handleLifecycle: Boolean = true,
     autoPlay: Boolean = true,
     usePlayerController: Boolean = true,
@@ -131,7 +132,9 @@ fun VideoPlayer(
 
     var mediaSession = remember<MediaSession?> { null }
 
-    val player = remember {
+    val player = if (customPlayer != null) remember {
+        customPlayer
+    } else remember {
         val httpDataSourceFactory = DefaultHttpDataSource.Factory()
 
         ExoPlayer.Builder(context)
